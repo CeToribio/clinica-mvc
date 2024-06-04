@@ -2,28 +2,44 @@ package dh.backend.clinicamvc.controller;
 
 import dh.backend.clinicamvc.model.Paciente;
 import dh.backend.clinicamvc.service.IPacienteService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
-
-
-@Controller
+@RestController
+@RequestMapping("/paciente")
 public class PacienteController {
-    private IPacienteService pacienteService;
+    public IPacienteService pacienteService;
 
     public PacienteController(IPacienteService pacienteService) {
         this.pacienteService = pacienteService;
     }
 
-    @GetMapping("/buscar")
-    public String buscarPorId(Model model, @RequestParam Integer id){
-        Paciente paciente = pacienteService.buscarPorId(id);
+    @PostMapping
+    public Paciente registrarPaciente(@RequestBody Paciente paciente){
+        Paciente pacienteARetornar = pacienteService.registrarPaciente(paciente);
+        return pacienteARetornar;
+    }
 
-        model.addAttribute("nombre", paciente.getNombre());
-        model.addAttribute("apellido", paciente.getApellido());
-        return "index";
+    @GetMapping
+    public List<Paciente> buscarTodos(){
+        return pacienteService.buscarTodos();
+    }
+
+    @GetMapping("/{id}")
+    public Paciente buscarPacientePorId(@PathVariable Integer id){
+        return pacienteService.buscarPorId(id);
+    }
+
+    @PutMapping
+    public String actualizarPaciente(@RequestBody Paciente paciente){
+        pacienteService.actualizarPaciente(paciente);
+        return "paciente actualizado";
+    }
+
+    @DeleteMapping("/{id}")
+    public String borrarPaciente(@PathVariable Integer id){
+        pacienteService.eliminarPaciente(id);
+        return "paciente eliminado";
     }
 }
