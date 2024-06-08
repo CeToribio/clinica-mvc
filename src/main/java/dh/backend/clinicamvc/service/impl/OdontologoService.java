@@ -37,4 +37,16 @@ public class OdontologoService implements IOdontologoService {
 
         return odontologoIDao.buscarTodos();
     }
+
+    @Override
+    public void actualizarOdontologo(Odontologo odontologo) {
+        odontologoIDao.actualizar(odontologo);
+
+    }
+
+    @Override
+    public void eliminarOdontologo(int id) {
+        odontologoIDao.eliminar(id);
+
+    }
 }
