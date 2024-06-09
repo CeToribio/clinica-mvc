@@ -1,5 +1,7 @@
 package dh.backend.clinicamvc.controller;
 
+import dh.backend.clinicamvc.Dto.request.TurnoRequestDto;
+import dh.backend.clinicamvc.Dto.response.TurnoResponseDto;
 import dh.backend.clinicamvc.model.Odontologo;
 import dh.backend.clinicamvc.model.Paciente;
 import dh.backend.clinicamvc.model.Turno;
@@ -20,8 +22,8 @@ public class  TurnoController {
     }
 
     @PostMapping
-    public ResponseEntity<Turno> agregarTurno(@RequestBody Turno turno){
-        Turno turnoADevolver = turnoService.registrar(turno);
+    public ResponseEntity<TurnoResponseDto> agregarTurno(@RequestBody TurnoRequestDto turno){
+        TurnoResponseDto turnoADevolver = turnoService.registrar(turno);
         if(turnoADevolver==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else {
@@ -29,18 +31,18 @@ public class  TurnoController {
         }
     }
     @GetMapping
-    public ResponseEntity<List<Turno>> buscarTodosTurnos(){
+    public ResponseEntity<List<TurnoResponseDto>> buscarTodosTurnos(){
         return ResponseEntity.ok(turnoService.buscarTodos());
     }
-    @PutMapping
-    public ResponseEntity<String> modificarTurno(@RequestBody Turno turno){
-        turnoService.actualizarTurno(turno);
+    @PutMapping("/{id}")
+    public ResponseEntity<String> modificarTurno(@PathVariable Integer id, @RequestBody TurnoRequestDto turno){
+        turnoService.actualizarTurno(id, turno);
         return ResponseEntity.ok("Turno modificado");
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Turno> buscarTurnoPorId(@PathVariable Integer id){
-        Turno turno = turnoService.buscarPorId(id);
+    public ResponseEntity<TurnoResponseDto> buscarTurnoPorId(@PathVariable Integer id){
+        TurnoResponseDto turno = turnoService.buscarPorId(id);
         if(turno != null){
             return ResponseEntity.ok(turno);
         }else{
