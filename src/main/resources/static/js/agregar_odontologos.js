@@ -21,11 +21,12 @@ form.addEventListener("submit", function (event) {
     .then((data) => {
       console.log(data);
        Swal.fire({
-              icon: 'success',
-              title: '¡Éxito!',
-              text: 'Odontólogo agregado correctamente',
-              confirmButtonColor: '#565656',
-            });
+         position: "center",
+         icon: "success",
+         text: "Odontólogo agregado correctamente",
+         showConfirmButton: false,
+         timer: 2000
+       });
       form.reset(); // Resetear el formulario
     })
     .catch((error) => {
