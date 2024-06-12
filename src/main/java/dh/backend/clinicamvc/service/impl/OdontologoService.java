@@ -1,52 +1,47 @@
 package dh.backend.clinicamvc.service.impl;
 
-import dh.backend.clinicamvc.dao.IDao;
-import dh.backend.clinicamvc.model.Odontologo;
+import dh.backend.clinicamvc.entity.Odontologo;
+import dh.backend.clinicamvc.repository.IOdontologoRepository;
 import dh.backend.clinicamvc.service.IOdontologoService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OdontologoService implements IOdontologoService {
-    private IDao<Odontologo> odontologoIDao;
 
-    public OdontologoService(IDao<Odontologo> odontologoIDao) {
+    private IOdontologoRepository odontologoRepository;
 
-        this.odontologoIDao = odontologoIDao;
-    }
-
-    public IDao<Odontologo> getOdontologoIDao() {
-        return odontologoIDao;
-    }
-
-    public void setOdontologoIDao(IDao<Odontologo> odontologoIDao) {
-        this.odontologoIDao = odontologoIDao;
+    public OdontologoService(IOdontologoRepository odontologoRepository) {
+        this.odontologoRepository = odontologoRepository;
     }
 
     public Odontologo registrarOdontologo(Odontologo odontologo){
 
-        return odontologoIDao.registrar(odontologo);
+        return odontologoRepository.save(odontologo);
     }
 
-    public Odontologo buscarUnOdontologo(int id){
-        return odontologoIDao.buscarPorId(id);
+    public Optional <Odontologo> buscarUnOdontologo(Integer id){
+
+        return odontologoRepository.findById(id);
     }
 
     public List<Odontologo> buscarTodos(){
-
-        return odontologoIDao.buscarTodos();
+        return odontologoRepository.findAll();
     }
 
     @Override
     public void actualizarOdontologo(Odontologo odontologo) {
-        odontologoIDao.actualizar(odontologo);
-
+        odontologoRepository.save(odontologo);
     }
 
     @Override
-    public void eliminarOdontologo(int id) {
-        odontologoIDao.eliminar(id);
-
+    public void eliminarOdontologo(Integer id) {
+        odontologoRepository.deleteById(id);
     }
+
+
 }
+
+
