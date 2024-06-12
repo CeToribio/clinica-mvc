@@ -2,9 +2,6 @@ package dh.backend.clinicamvc.controller;
 
 import dh.backend.clinicamvc.Dto.request.TurnoRequestDto;
 import dh.backend.clinicamvc.Dto.response.TurnoResponseDto;
-import dh.backend.clinicamvc.model.Odontologo;
-import dh.backend.clinicamvc.model.Paciente;
-import dh.backend.clinicamvc.model.Turno;
 import dh.backend.clinicamvc.service.ITurnoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

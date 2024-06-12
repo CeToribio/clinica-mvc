@@ -1,12 +1,13 @@
 package dh.backend.clinicamvc.controller;
 
-import dh.backend.clinicamvc.model.Paciente;
+import dh.backend.clinicamvc.entity.Paciente;
 import dh.backend.clinicamvc.service.IPacienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/paciente")
@@ -29,14 +30,15 @@ public class PacienteController {
 
     @GetMapping
     public ResponseEntity<List<Paciente>>  buscarTodos(){
+
         return ResponseEntity.ok(pacienteService.buscarTodos());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Paciente> buscarPacientePorId(@PathVariable Integer id){
-        Paciente paciente = pacienteService.buscarPorId(id);
-        if(paciente != null){
-            return ResponseEntity.ok(paciente);
+        Optional<Paciente> paciente = pacienteService.buscarPorId(id);
+        if(paciente.isPresent()){
+            return ResponseEntity.ok(paciente.get());
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
