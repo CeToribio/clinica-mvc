@@ -62,5 +62,19 @@ public class OdontologoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/apellido/{apellido}")
+    public ResponseEntity<List<Odontologo>> buscarPorApellido(@PathVariable String apellido){
+        List<Odontologo> listaOdontologos =odontologoService.buscarPorApellido(apellido);
+        if(listaOdontologos.size()>0){
+            return ResponseEntity.ok(listaOdontologos);
+        } else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<List<Odontologo>> buscarTodos(@PathVariable String nombre){
+        return ResponseEntity.ok(odontologoService.buscarPorNombre(nombre));
+    }
 }
 
