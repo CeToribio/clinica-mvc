@@ -1,7 +1,5 @@
 package dh.backend.clinicamvc.service;
 
-
-
 import dh.backend.clinicamvc.entity.Domicilio;
 import dh.backend.clinicamvc.entity.Paciente;
 import dh.backend.clinicamvc.service.impl.PacienteService;
@@ -49,7 +47,6 @@ class PacienteServiceTest {
     @DisplayName("Testear que un paciente fue guardado")
     void testPacienteGuardado(){
         Paciente pacienteDesdeLaBD = pacienteService.registrarPaciente(paciente);
-
         assertNotNull(pacienteDesdeLaBD);
     }
 
@@ -66,12 +63,8 @@ class PacienteServiceTest {
     @Test
     @DisplayName("Testear busqueda todos los pacientes")
     void testBusquedaTodos() {
-
         List<Paciente> pacientes = pacienteService.buscarTodos();
-
         assertTrue(pacientes.size()!=0);
-
     }
-
 
 }
