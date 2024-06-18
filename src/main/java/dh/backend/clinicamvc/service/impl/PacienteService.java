@@ -46,4 +46,15 @@ public class PacienteService implements IPacienteService {
         LOGGER.info("Paciente eliminado: " + id);
         pacienteRepository.deleteById(id);
     }
+
+    @Override
+    public List<Paciente> buscarPorApellido(String apellido) {
+        return pacienteRepository.buscarPorApellido(apellido);
+    }
+
+    @Override
+    public List<Paciente> buscarPorDni(String dni) {
+        return pacienteRepository.buscarPorDni(dni);
+    }
+
 }
