@@ -1,5 +1,6 @@
 package dh.backend.clinicamvc.service;
 
+import dh.backend.clinicamvc.entity.Odontologo;
 import dh.backend.clinicamvc.entity.Paciente;
 
 import java.util.List;
@@ -14,4 +15,9 @@ public interface IPacienteService {
     List<Paciente> buscarTodos();
     void actualizarPaciente(Paciente paciente);
     void eliminarPaciente(Integer id);
+
+    //Metodos con HQL
+    List<Paciente> buscarPorApellido(String apellido);
+    List<Paciente> buscarPorDni(String dni);
+
 }

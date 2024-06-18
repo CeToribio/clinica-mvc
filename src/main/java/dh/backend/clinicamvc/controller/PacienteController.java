@@ -1,5 +1,6 @@
 package dh.backend.clinicamvc.controller;
 
+import dh.backend.clinicamvc.entity.Odontologo;
 import dh.backend.clinicamvc.entity.Paciente;
 import dh.backend.clinicamvc.service.IPacienteService;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,25 @@ public class PacienteController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String>  borrarPaciente(@PathVariable Integer id) {
         pacienteService.eliminarPaciente(id);
-        return ResponseEntity.ok("paciente eliminado");
+        return ResponseEntity.ok("paciente  eliminado");
     }
+
+    @GetMapping("/apellido/{apellido}")
+    public ResponseEntity<List<Paciente>> buscarPorApellido(@PathVariable String apellido){
+        List<Paciente> listaPacientes =pacienteService.buscarPorApellido(apellido);
+        if(listaPacientes.size()>0){
+            return ResponseEntity.ok(listaPacientes);
+        } else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @GetMapping("/dni/{dni}")
+    public ResponseEntity<List<Paciente>> buscarPorDni(@PathVariable String dni){
+        List<Paciente> listaPacientes =pacienteService.buscarPorDni(dni);
+        if(listaPacientes.size()>0){
+            return ResponseEntity.ok(listaPacientes);
+        } else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
 }
