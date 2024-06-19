@@ -2,6 +2,7 @@ package dh.backend.clinicamvc.controller;
 
 import dh.backend.clinicamvc.Dto.request.TurnoRequestDto;
 import dh.backend.clinicamvc.Dto.response.TurnoResponseDto;
+import dh.backend.clinicamvc.exception.ResourceNotFoundException;
 import dh.backend.clinicamvc.service.ITurnoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class  TurnoController {
     @PutMapping("/{id}")
     public ResponseEntity<String> modificarTurno(@PathVariable Integer id, @RequestBody TurnoRequestDto turno){
         turnoService.actualizarTurno(id, turno);
-        return ResponseEntity.ok("Turno modificado");
+        return ResponseEntity.ok("{\"message\": \"turno modificado\"}");
     }
 
     @GetMapping("/{id}")
@@ -50,9 +51,9 @@ public class  TurnoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String>  borrarTurno(@PathVariable Integer id) {
+    public ResponseEntity<String>  borrarTurno(@PathVariable Integer id) throws ResourceNotFoundException {
         turnoService.eliminarTurno(id);
-        return ResponseEntity.ok("turno eliminado");
+        return ResponseEntity.ok("{\"message\": \"turno eliminado\"}");
     }
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

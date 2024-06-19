@@ -2,6 +2,7 @@ package dh.backend.clinicamvc.controller;
 
 import dh.backend.clinicamvc.entity.Odontologo;
 import dh.backend.clinicamvc.entity.Paciente;
+import dh.backend.clinicamvc.exception.ResourceNotFoundException;
 import dh.backend.clinicamvc.service.IPacienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,13 +49,13 @@ public class PacienteController {
     @PutMapping
     public ResponseEntity<String>  actualizarPaciente(@RequestBody Paciente paciente){
         pacienteService.actualizarPaciente(paciente);
-        return  ResponseEntity.ok("paciente actualizado");
+        return  ResponseEntity.ok("{\"message\": \"paciente actualizado\"}");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String>  borrarPaciente(@PathVariable Integer id) {
+    public ResponseEntity<String>  borrarPaciente(@PathVariable Integer id) throws ResourceNotFoundException {
         pacienteService.eliminarPaciente(id);
-        return ResponseEntity.ok("paciente  eliminado");
+        return ResponseEntity.ok("{\"message\": \"paciente eliminado\"}");
     }
 
     @GetMapping("/apellido/{apellido}")
