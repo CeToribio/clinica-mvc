@@ -1,6 +1,7 @@
 package dh.backend.clinicamvc.service.impl;
 
 import dh.backend.clinicamvc.entity.Odontologo;
+import dh.backend.clinicamvc.exception.ResourceNotFoundException;
 import dh.backend.clinicamvc.repository.IOdontologoRepository;
 import dh.backend.clinicamvc.service.IOdontologoService;
 import org.slf4j.Logger;
@@ -43,9 +44,12 @@ public class OdontologoService implements IOdontologoService {
     }
 
     @Override
-    public void eliminarOdontologo(Integer id) {
+    public void eliminarOdontologo(Integer id) throws ResourceNotFoundException {
         LOGGER.info("Odontologo eliminado: " + id);
-        odontologoRepository.deleteById(id);
+        Optional<Odontologo> odontologoOptional = buscarUnOdontologo(id);
+        if (odontologoOptional.isPresent())
+            odontologoRepository.deleteById(id);
+        else throw new ResourceNotFoundException("{\"message\": \"odontologo no encontrado\"}");
     }
 
     @Override

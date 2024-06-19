@@ -7,6 +7,7 @@ import dh.backend.clinicamvc.entity.Odontologo;
 import dh.backend.clinicamvc.entity.Paciente;
 
 import dh.backend.clinicamvc.service.impl.TurnoService;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,11 @@ class TurnoServiceTest {
     private static Logger LOGGER = LoggerFactory.getLogger(TurnoService.class);
     //inyección de dependencia
     @Autowired
-    private TurnoService turnoService;
+    private ITurnoService turnoService;
+    @Autowired
+    private IPacienteService pacienteService;
+    @Autowired
+    private IOdontologoService odontologoService;
     private TurnoRequestDto turno;
     private Paciente paciente;
     private Odontologo odontologo;
@@ -45,11 +50,13 @@ class TurnoServiceTest {
         domicilio.setLocalidad("San Pedro");
         domicilio.setProvincia("Jujuy");
         paciente.setDomicilio(domicilio);
+        pacienteService.registrarPaciente(paciente);
         odontologo = new Odontologo();
         odontologo.setId(1);
         odontologo.setMatricula("1111");
         odontologo.setNombre("Juan");
         odontologo.setApellido("Tolentino");
+        odontologoService.registrarOdontologo(odontologo);
         turno = new TurnoRequestDto();
         turno.setPaciente_id(1);
         turno.setOdontologo_id(1);
@@ -57,12 +64,13 @@ class TurnoServiceTest {
     }
 
 
-    //@Test
-    //@DisplayName("Testear que un turno fue guardado")
-    //void testTurnoGuardado(){
-        //TurnoResponseDto turnoDesdeLaBD = turnoService.registrar(turno);
-        //assertNotNull(turnoDesdeLaBD);
-    //}
+    @Test
+    @Transactional
+    @DisplayName("Testear que un turno fue guardado")
+    void testTurnoGuardado(){
+        TurnoResponseDto turnoDesdeLaBD = turnoService.registrar(turno);
+        assertNotNull(turnoDesdeLaBD);
+    }
 
 
     @Test
