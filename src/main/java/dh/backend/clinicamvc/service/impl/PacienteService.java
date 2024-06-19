@@ -1,6 +1,7 @@
 package dh.backend.clinicamvc.service.impl;
 
 import dh.backend.clinicamvc.entity.Paciente;
+import dh.backend.clinicamvc.exception.ResourceNotFoundException;
 import dh.backend.clinicamvc.repository.IPacienteRepository;
 import dh.backend.clinicamvc.service.IPacienteService;
 import org.slf4j.Logger;
@@ -42,9 +43,13 @@ public class PacienteService implements IPacienteService {
     }
 
     @Override
-    public void eliminarPaciente(Integer id) {
+    public void eliminarPaciente(Integer id) throws ResourceNotFoundException {
         LOGGER.info("Paciente eliminado: " + id);
-        pacienteRepository.deleteById(id);
+        Optional<Paciente> pacienteOptional = buscarPorId(id);
+        if (pacienteOptional.isPresent())
+            pacienteRepository.deleteById(id);
+        else
+            throw new ResourceNotFoundException("{\"message\": \"paciente no encontrado\"}");
     }
 
     @Override
