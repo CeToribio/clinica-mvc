@@ -22,13 +22,9 @@ public class  TurnoController {
     }
 
     @PostMapping
-    public ResponseEntity<TurnoResponseDto> agregarTurno(@RequestBody TurnoRequestDto turno){
+    public ResponseEntity<TurnoResponseDto> agregarTurno(@RequestBody TurnoRequestDto turno) throws ResourceNotFoundException {
         TurnoResponseDto turnoADevolver = turnoService.registrar(turno);
-        if(turnoADevolver==null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(turnoADevolver);
-        }
+        return ResponseEntity.ok(turnoADevolver);
     }
     @GetMapping
     public ResponseEntity<List<TurnoResponseDto>> buscarTodosTurnos(){

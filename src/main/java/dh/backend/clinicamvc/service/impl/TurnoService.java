@@ -39,24 +39,22 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public TurnoResponseDto registrar(TurnoRequestDto turnoRequestDto) {
+    public TurnoResponseDto registrar(TurnoRequestDto turnoRequestDto) throws ResourceNotFoundException {
         Optional<Paciente> paciente = pacienteRepository.findById(turnoRequestDto.getPaciente_id());
         Optional<Odontologo> odontologo = odontologoRepository.findById(turnoRequestDto.getOdontologo_id());
         Turno turnoARegistrar = new Turno();
         Turno turnoGuardado = null;
         TurnoResponseDto turnoADevolver = null;
-        if(paciente.isPresent() && odontologo.isPresent()){
-
+        if(paciente.isEmpty() || odontologo.isEmpty()){
+            throw new ResourceNotFoundException("{\"message\": \"odontologo o paciente no encontrado\"}");
+        } else {
             turnoARegistrar.setOdontologo(odontologo.get());
             turnoARegistrar.setPaciente(paciente.get());
             turnoARegistrar.setFecha(LocalDate.parse(turnoRequestDto.getFecha()));
             turnoGuardado = turnoRepository.save(turnoARegistrar);
-            LOGGER.info("Turno registrado: " + turnoGuardado);
-
             turnoADevolver = mapToResponseDto(turnoGuardado);
+            return turnoADevolver;
         }
-
-        return turnoADevolver;
     }
 
     @Override
@@ -104,12 +102,13 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public void eliminarTurno(Integer id) throws ResourceNotFoundException {
-        LOGGER.info("Turno eliminado: " + id);
         TurnoResponseDto turnoResponseDto = buscarPorId(id);
-        if (turnoResponseDto !=null)
+        if (turnoResponseDto !=null){
             turnoRepository.deleteById(id);
-        else
+            LOGGER.info("Turno eliminado: " + id);
+        } else {
             throw new ResourceNotFoundException("{\"message\": \"turno no encontrado\"}");
+        }
     }
 
     @Override

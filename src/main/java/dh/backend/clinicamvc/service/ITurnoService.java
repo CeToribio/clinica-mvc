@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ITurnoService {
-    TurnoResponseDto registrar(TurnoRequestDto turnoRequestDto);
+    TurnoResponseDto registrar(TurnoRequestDto turnoRequestDto) throws ResourceNotFoundException;
 
     TurnoResponseDto buscarPorId(Integer id);
 
