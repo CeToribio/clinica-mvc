@@ -1,6 +1,7 @@
 package dh.backend.clinicamvc.service.impl;
 
 import dh.backend.clinicamvc.entity.Odontologo;
+import dh.backend.clinicamvc.exception.BadRequestException;
 import dh.backend.clinicamvc.exception.ResourceNotFoundException;
 import dh.backend.clinicamvc.repository.IOdontologoRepository;
 import dh.backend.clinicamvc.service.IOdontologoService;
@@ -22,9 +23,13 @@ public class OdontologoService implements IOdontologoService {
     }
 
 
-    public Odontologo registrarOdontologo(Odontologo odontologo){
-        LOGGER.info("Odontologo registrado: " + odontologo);
-        return odontologoRepository.save(odontologo);
+    public Odontologo registrarOdontologo(Odontologo odontologo) throws BadRequestException {
+        if(odontologo.getApellido() == null || odontologo.getNombre() == null || odontologo.getMatricula() == null){
+            throw new BadRequestException("{\"message\": \"faltan datos obligatorios\"}");
+        } else {
+            LOGGER.info("Odontologo registrado: " + odontologo);
+            return odontologoRepository.save(odontologo);
+        }
     }
 
     public Optional <Odontologo> buscarUnOdontologo(Integer id){

@@ -18,4 +18,9 @@ public class GlobalExcepcion {
         LOGGER.info("Excepción encontrada: " + e);
         return ResponseEntity.status(HttpStatusCode.valueOf(404)).body(e.getMessage());
     }
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<String> BadRequest(BadRequestException e){
+        LOGGER.info("Excepción encontrada: " + e);
+        return ResponseEntity.status(HttpStatusCode.valueOf(400)).body(e.getMessage());
+    }
 }

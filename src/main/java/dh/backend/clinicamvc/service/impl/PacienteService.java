@@ -1,6 +1,7 @@
 package dh.backend.clinicamvc.service.impl;
 
 import dh.backend.clinicamvc.entity.Paciente;
+import dh.backend.clinicamvc.exception.BadRequestException;
 import dh.backend.clinicamvc.exception.ResourceNotFoundException;
 import dh.backend.clinicamvc.repository.IPacienteRepository;
 import dh.backend.clinicamvc.service.IPacienteService;
@@ -21,9 +22,13 @@ public class PacienteService implements IPacienteService {
         this.pacienteRepository = pacienteRepository;
     }
 
-    public Paciente registrarPaciente(Paciente paciente){
-        LOGGER.info("Paciente registrado: " + paciente);
-        return pacienteRepository.save(paciente);
+    public Paciente registrarPaciente(Paciente paciente) throws BadRequestException {
+        if(paciente.getApellido() == null || paciente.getNombre() == null || paciente.getDni() == null || paciente.getFechaIngreso() == null){
+            throw new BadRequestException("{\"message\": \"faltan datos obligatorios\"}");
+        } else {
+            LOGGER.info("Paciente registrado: " + paciente);
+            return pacienteRepository.save(paciente);
+        }
     }
 
     public Optional<Paciente> buscarPorId(Integer id){
@@ -44,12 +49,14 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public void eliminarPaciente(Integer id) throws ResourceNotFoundException {
-        LOGGER.info("Paciente eliminado: " + id);
         Optional<Paciente> pacienteOptional = buscarPorId(id);
-        if (pacienteOptional.isPresent())
+        if (pacienteOptional.isPresent()){
             pacienteRepository.deleteById(id);
-        else
+            LOGGER.info("Paciente eliminado: " + id);
+        } else {
             throw new ResourceNotFoundException("{\"message\": \"paciente no encontrado\"}");
+        }
+
     }
 
     @Override
