@@ -6,10 +6,13 @@ import dh.backend.clinicamvc.entity.Domicilio;
 import dh.backend.clinicamvc.entity.Odontologo;
 import dh.backend.clinicamvc.entity.Paciente;
 
+import dh.backend.clinicamvc.exception.BadRequestException;
+import dh.backend.clinicamvc.exception.ResourceNotFoundException;
 import dh.backend.clinicamvc.service.impl.TurnoService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +39,10 @@ class TurnoServiceTest {
     private Paciente paciente;
     private Odontologo odontologo;
 
+    private TurnoResponseDto turnoResponseDto;
+
     @BeforeEach
-    void setUp(){
+    void setUp() throws BadRequestException, ResourceNotFoundException {
         paciente = new Paciente();
         paciente.setId(1);
         paciente.setNombre("Menganito");
@@ -61,23 +66,25 @@ class TurnoServiceTest {
         turno.setPaciente_id(1);
         turno.setOdontologo_id(1);
         turno.setFecha("2021-12-12");
+        turnoResponseDto = turnoService.registrar(turno);
     }
 
 
     @Test
+    @Order(1)
     @Transactional
     @DisplayName("Testear que un turno fue guardado")
-    void testTurnoGuardado(){
-        TurnoResponseDto turnoDesdeLaBD = turnoService.registrar(turno);
-        assertNotNull(turnoDesdeLaBD);
+    void testTurnoGuardado() throws BadRequestException, ResourceNotFoundException {
+        assertNotNull(turnoResponseDto);
     }
 
 
     @Test
-    @DisplayName("Testear busqueda todos los pacientes")
+    @Order(2)
+    @DisplayName("Testear busqueda todos los turnos")
     void testBusquedaTodos() {
         List<TurnoResponseDto> turnos = turnoService.buscarTodos();
-        assertTrue(turnos.size()!=0);
+        assertTrue(!turnos.isEmpty());
     }
 
 }

@@ -30,7 +30,6 @@ public class OdontologoController {
 
     @GetMapping
     public ResponseEntity<List<Odontologo>> buscarTodos() {
-
         return ResponseEntity.ok(odontologoService.buscarTodos());
     }
 

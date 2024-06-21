@@ -7,6 +7,7 @@ import dh.backend.clinicamvc.Dto.response.TurnoResponseDto;
 import dh.backend.clinicamvc.entity.Odontologo;
 import dh.backend.clinicamvc.entity.Paciente;
 import dh.backend.clinicamvc.entity.Turno;
+import dh.backend.clinicamvc.exception.BadRequestException;
 import dh.backend.clinicamvc.exception.ResourceNotFoundException;
 import dh.backend.clinicamvc.repository.IOdontologoRepository;
 import dh.backend.clinicamvc.repository.IPacienteRepository;
@@ -39,20 +40,21 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public TurnoResponseDto registrar(TurnoRequestDto turnoRequestDto) throws ResourceNotFoundException {
+    public TurnoResponseDto registrar(TurnoRequestDto turnoRequestDto) throws BadRequestException {
         Optional<Paciente> paciente = pacienteRepository.findById(turnoRequestDto.getPaciente_id());
         Optional<Odontologo> odontologo = odontologoRepository.findById(turnoRequestDto.getOdontologo_id());
         Turno turnoARegistrar = new Turno();
         Turno turnoGuardado = null;
         TurnoResponseDto turnoADevolver = null;
         if(paciente.isEmpty() || odontologo.isEmpty()){
-            throw new ResourceNotFoundException("{\"message\": \"odontologo o paciente no encontrado\"}");
+            throw new BadRequestException("{\"message\": \"odontologo o paciente no encontrado\"}");
         } else {
             turnoARegistrar.setOdontologo(odontologo.get());
             turnoARegistrar.setPaciente(paciente.get());
             turnoARegistrar.setFecha(LocalDate.parse(turnoRequestDto.getFecha()));
             turnoGuardado = turnoRepository.save(turnoARegistrar);
             turnoADevolver = mapToResponseDto(turnoGuardado);
+            LOGGER.info("Turno guardado: " + turnoGuardado.getId());
             return turnoADevolver;
         }
     }

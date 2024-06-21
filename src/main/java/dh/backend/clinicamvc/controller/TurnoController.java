@@ -2,6 +2,7 @@ package dh.backend.clinicamvc.controller;
 
 import dh.backend.clinicamvc.Dto.request.TurnoRequestDto;
 import dh.backend.clinicamvc.Dto.response.TurnoResponseDto;
+import dh.backend.clinicamvc.exception.BadRequestException;
 import dh.backend.clinicamvc.exception.ResourceNotFoundException;
 import dh.backend.clinicamvc.service.ITurnoService;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class  TurnoController {
     }
 
     @PostMapping
-    public ResponseEntity<TurnoResponseDto> agregarTurno(@RequestBody TurnoRequestDto turno) throws ResourceNotFoundException {
+    public ResponseEntity<TurnoResponseDto> agregarTurno(@RequestBody TurnoRequestDto turno) throws BadRequestException, ResourceNotFoundException {
         TurnoResponseDto turnoADevolver = turnoService.registrar(turno);
         return ResponseEntity.ok(turnoADevolver);
     }
